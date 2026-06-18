@@ -26,15 +26,14 @@
             font-size: 16px; 
             font-weight: 500; 
             transition: all 0.3s ease; 
-            color: #777; /* 기본 상태는 어두운 회색 */
+            color: #777;
             padding-bottom: 5px;
             position: relative;
         }
         .nav-links a:hover { color: #bbb; }
         
-        /* 현재 위치한 메뉴 스타일 (Active 효과) */
         .nav-links a.active { 
-            color: #ffffff !important; /* 선명한 흰색 */
+            color: #ffffff !important; 
             font-weight: 700;
         }
         .nav-links a.active::after {
@@ -44,7 +43,7 @@
             left: 0;
             width: 100%;
             height: 2px;
-            background-color: #e50914; /* 메뉴 밑에 생기는 레드 라인 */
+            background-color: #e50914;
         }
 
         /* 공통 섹션 스타일 */
@@ -83,51 +82,125 @@
         .product-info p { color: #999; font-size: 15px; margin-bottom: 15px; }
         .product-spec { font-size: 14px; color: #e50914; font-weight: 600; }
 
-        /* 4. 보증서 조회 섹션 */
-        #warranty { background: #111; text-align: center; }
-        .warranty-box { max-width: 500px; margin: 0 auto; background: #161616; padding: 40px; border-radius: 8px; border: 1px solid #222; }
-        .warranty-box p { color: #aaa; margin-bottom: 25px; }
-        .search-input { width: 100%; padding: 15px; background: #222; border: 1px solid #333; color: #fff; border-radius: 5px; margin-bottom: 15px; font-size: 16px; text-align: center; }
-        .search-input:focus { border-color: #e50914; outline: none; }
-        .search-btn { width: 100%; padding: 15px; background: #e50914; border: none; color: #fff; font-size: 16px; font-weight: 600; border-radius: 5px; cursor: pointer; transition: 0.3s; }
-        .search-btn:hover { background: #b80710; }
-        #warranty-result { margin-top: 20px; padding: 15px; border-radius: 5px; display: none; font-weight: 500; text-align: left; line-height: 1.8; }
+        /* 4. 워런티 / 시공 갤러리 섹션 */
+        #warranty { background: #111; }
+        .warranty-grid { 
+            display: grid; 
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 20px; 
+            max-width: 1200px; 
+            margin: 0 auto; 
+            width: 100%; 
+        }
+        .warranty-item { 
+            position: relative; 
+            border-radius: 6px; 
+            overflow: hidden; 
+            aspect-ratio: 4 / 3; 
+            cursor: pointer; 
+            border: 1px solid #222;
+            transition: all 0.3s ease;
+        }
+        .warranty-item img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+            transition: transform 0.5s ease;
+        }
+        .warranty-item:hover { border-color: #e50914; box-shadow: 0 5px 15px rgba(229,9,20,0.2); }
+        .warranty-item:hover img { transform: scale(1.08); }
+        
+        .warranty-overlay {
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to top, rgba(0,0,0,0.8) 0%, rgba(0,0,0,0) 100%);
+            display: flex; align-items: flex-end; padding: 20px;
+        }
+        .warranty-overlay h3 { font-size: 18px; font-weight: 600; color: #fff; letter-spacing: 0.5px; }
+
+        /* 완벽한 화면 정중앙 팝업 모달 스타일 */
+        .modal {
+            display: none; 
+            position: fixed; 
+            top: 0; left: 0; 
+            width: 100%; height: 100%;
+            background-color: rgba(0, 0, 0, 0.85); 
+            backdrop-filter: blur(8px);
+            z-index: 2000; 
+            
+            /* 정중앙 정렬을 책임지는 플렉스 박스 */
+            display: none;
+            justify-content: center; 
+            align-items: center; 
+            padding: 20px;
+        }
+        .modal-content {
+            background: #161616; 
+            max-width: 550px; 
+            width: 100%; 
+            border-radius: 12px;
+            border: 1px solid #333; 
+            overflow: hidden; 
+            position: relative;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            
+            /* 팝업이 나타날 때 위에서 부드럽게 내려오는 애니메이션 */
+            animation: modalFadeIn 0.35s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        @keyframes modalFadeIn {
+            from { opacity: 0; transform: translateY(-30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .modal-img { width: 100%; height: 300px; object-fit: cover; border-bottom: 3px solid #e50914; }
+        .modal-body { padding: 25px 30px 35px; }
+        .modal-body h3 { font-size: 24px; color: #fff; margin-bottom: 15px; font-weight: 700; letter-spacing: -0.5px; }
+        .modal-body p { color: #b3b3b3; font-size: 15px; line-height: 1.8; font-weight: 300; }
+        
+        /* 팝업 닫기 버튼 */
+        .close-btn {
+            position: absolute; top: 12px; right: 20px; color: #fff;
+            font-size: 36px; font-weight: 300; cursor: pointer; transition: 0.2s; z-index: 10;
+            line-height: 1;
+        }
+        .close-btn:hover { color: #e50914; }
 
         /* 푸터 */
         footer { background: #0b0b0b; padding: 40px 8%; border-top: 1px solid #222; text-align: center; color: #666; font-size: 14px; }
         footer p { margin-bottom: 10px; }
 
         /* 반응형 모바일 */
+        @media (max-width: 992px) {
+            .warranty-grid { grid-template-columns: repeat(2, 1fr); }
+        }
         @media (max-width: 768px) {
             header { padding: 20px 5%; }
             .nav-links { display: none; }
             #home h1 { font-size: 36px; }
             .about-container { flex-direction: column; }
             section { padding: 80px 5% 60px; }
+            .warranty-grid { grid-template-columns: 1fr; }
+            .modal-img { height: 220px; }
+            .modal-body { padding: 20px; }
         }
     </style>
 </head>
 <body>
 
-    <!-- 헤더 -->
     <header>
         <div class="logo">IRON <span>GUARD</span></div>
         <nav class="nav-links">
             <a href="#home" class="active">Home</a>
             <a href="#about">About</a>
             <a href="#products">Products</a>
-            <a href="#warranty">Warranty</a>
+            <a href="#warranty">GALLERY</a>
         </nav>
     </header>
 
-    <!-- 1. 홈 섹션 -->
     <section id="home">
         <h1>IRON GUARD PPF</h1>
         <p>철벽 같은 보호력, 도장면 그 이상의 완벽한 투명함</p>
         <a href="#products" class="btn">라인업 확인하기</a>
     </section>
 
-    <!-- 2. 브랜드 스토리 섹션 -->
     <section id="about">
         <h2 class="section-title">WHY <span>IRON GUARD</span></h2>
         <div class="about-container">
@@ -157,11 +230,9 @@
         </div>
     </section>
 
-    <!-- 3. 제품 안내 섹션 -->
     <section id="products">
         <h2 class="section-title">PRODUCT <span>LINEUP</span></h2>
         <div class="product-grid">
-            <!-- 제품 1 -->
             <div class="product-card">
                 <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&w=600&q=80');"></div>
                 <div class="product-info">
@@ -170,7 +241,6 @@
                     <div class="product-spec">보증기간: 10년 | 두께: 8.5 mil</div>
                 </div>
             </div>
-            <!-- 제품 2 -->
             <div class="product-card">
                 <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80');"></div>
                 <div class="product-info">
@@ -179,7 +249,6 @@
                     <div class="product-spec">보증기간: 7년 | 두께: 8.0 mil</div>
                 </div>
             </div>
-            <!-- 제품 3 -->
             <div class="product-card">
                 <div class="product-img" style="background-image: url('https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80');"></div>
                 <div class="product-info">
@@ -191,61 +260,111 @@
         </div>
     </section>
 
-    <!-- 4. 정품 보증서 조회 섹션 -->
     <section id="warranty">
-        <h2 class="section-title">ONLINE <span>WARRANTY</span></h2>
-        <div class="warranty-box">
-            <p>IRON GUARD 공식 시공점에서 발급받으신 정품 보증서 번호를 입력하시면 보증 기간 확인이 가능합니다.</p>
-            <input type="text" id="warranty-input" class="search-input" placeholder="보증서 번호를 입력하세요 (예: IR2026)">
-            <button class="search-btn" onclick="checkWarranty()">보증서 조회하기</button>
-            <div id="warranty-result"></div>
+        <h2 class="section-title">WORK <span>GALLERY</span></h2>
+        <div class="warranty-grid">
+            <div class="warranty-item" data-title="01. 본네트 패키지" data-desc="프리미엄 IRON Gloss 필름을 사용하여 주행 중 가장 쉽게 상처받는 본네트를 스톤칩으로부터 완벽하게 방어합니다. 왜곡 없는 초고광택을 직접 느껴보세요." data-img="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=600&q=80">
+                <img src="https://images.unsplash.com/photo-1617788138017-80ad40651399?auto=format&fit=crop&w=600&q=80" alt="시공예시1">
+                <div class="warranty-overlay"><h3>01. 본네트 패키지</h3></div>
+            </div>
+            <div class="warranty-item" data-title="02. 프론트 범퍼" data-desc="좁은 주차 공간이나 코너링 시 빈번히 발생하는 스크래치로부터 범퍼 측면을 철저히 보호합니다. 자가복원 기술로 경미한 상처는 스스로 치유됩니다." data-img="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80">
+                <img src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=600&q=80" alt="시공예시2">
+                <div class="warranty-overlay"><h3>02. 프론트 범퍼</h3></div>
+            </div>
+            <div class="warranty-item" data-title="03. 사이드 미러" data-desc="고속 주행 시 날아오는 벌레 사체나 모래 파편으로 인해 흐려지기 쉬운 사이드 미러 전면부를 강력하게 커버합니다." data-img="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80">
+                <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?auto=format&fit=crop&w=600&q=80" alt="시공예시3">
+                <div class="warranty-overlay"><h3>03. 사이드 미러</h3></div>
+            </div>
+            <div class="warranty-item" data-title="04. 생활보호 패키지" data-desc="문을 열고 닫을 때 벽이나 기둥에 찍히는 문콕 방지, 손톱으로 인한 도어컵 안쪽 미세 스크래치를 방지하는 생활보호 필수 코스입니다." data-img="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&w=600&q=80">
+                <img src="https://images.unsplash.com/photo-1542282088-fe8426682b8f?auto=format&fit=crop&w=600&q=80" alt="시공예시4">
+                <div class="warranty-overlay"><h3>04. 생활보호 패키지</h3></div>
+            </div>
+            <div class="warranty-item" data-title="05. 루프스킨 Black" data-desc="IRON Black 필름을 장착하여 파노라마 선루프와 같은 드레스업 효과를 연출함과 동시에, 도장면을 날염과 변색으로부터 완벽히 보호합니다." data-img="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80">
+                <img src="https://images.unsplash.com/photo-1563720223185-11003d516935?auto=format&fit=crop&w=600&q=80" alt="시공예시5">
+                <div class="warranty-overlay"><h3>05. 루프스킨 Black</h3></div>
+            </div>
+            <div class="warranty-item" data-title="06. 헤드라이트" data-desc="고가의 LED 헤드라이트가 황변되거나 깨지는 것을 막아줍니다. 뛰어난 광도 투과율로 야간 주행 시 시야를 전혀 방해하지 않습니다." data-img="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=600&q=80">
+                <img src="https://images.unsplash.com/photo-1619767886558-efdc259cde1a?auto=format&fit=crop&w=600&q=80" alt="시공예시6">
+                <div class="warranty-overlay"><h3>06. 헤드라이트</h3></div>
+            </div>
+            <div class="warranty-item" data-title="07. 트렁크 리드" data-desc="트렁크에서 무거운 짐을 싣고 내릴 때 긁히기 쉬운 뒷범퍼 상단부를 빈틈없이 보호해 일상생활의 편리함을 더합니다." data-img="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=600&q=80">
+                <img src="https://images.unsplash.com/photo-1605559424843-9e4c228bf1c2?auto=format&fit=crop&w=600&q=80" alt="시공예시7">
+                <div class="warranty-overlay"><h3>07. 트렁크 리드</h3></div>
+            </div>
+            <div class="warranty-item" data-title="08. 하이글로시 필러" data-desc="스크래치에 취약한 하이글로시 재질의 B필러와 C필러를 덮어, 세차 시 발생하는 타월 스크래치 스트레스를 없애줍니다." data-img="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=600&q=80">
+                <img src="https://images.unsplash.com/photo-1511919884226-fd3cad34687c?auto=format&fit=crop&w=600&q=80" alt="시공예시8">
+                <div class="warranty-overlay"><h3>08. 하이글로시 필러</h3></div>
+            </div>
+            <div class="warranty-item" data-title="09. 전체 시공 패키지" data-desc="차량 전체를 IRON GUARD 필름으로 감싸 외관 관리의 번거로움을 완전히 해결하고, 시간이 지나도 신차 상태의 가치를 그대로 유지하는 하이엔드 서비스입니다." data-img="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80">
+                <img src="https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=600&q=80" alt="시공예시9">
+                <div class="warranty-overlay"><h3>09. 전체 시공 패키지</h3></div>
+            </div>
         </div>
     </section>
 
-    <!-- 푸터 -->
+    <div id="warrantyModal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn">&times;</span>
+            <img id="modalImg" class="modal-img" src="" alt="상세이미지">
+            <div class="modal-body">
+                <h3 id="modalTitle">제목</h3>
+                <p id="modalDesc">설명글 내용</p>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>© 2026 IRON GUARD All Rights Reserved.</p>
         <p style="font-size: 12px; color: #444;">본사: 서울시 강남구 테헤란로 | 고객센터: 1544-0000 | 이메일: info@ironguardppf.com</p>
     </footer>
 
-    <!-- 자바스크립트 -->
     <script>
-        // 1. 보증서 조회 기능
-        function checkWarranty() {
-            const input = document.getElementById('warranty-input').value.trim().toUpperCase();
-            const resultDiv = document.getElementById('warranty-result');
-            
-            if(input === "") {
-                alert("보증서 번호를 입력해 주세요.");
-                return;
-            }
+        // 1. 모달 팝업 오픈 및 데이터 바인딩
+        const modal = document.getElementById('warrantyModal');
+        const modalImg = document.getElementById('modalImg');
+        const modalTitle = document.getElementById('modalTitle');
+        const modalDesc = document.getElementById('modalDesc');
+        const closeBtn = document.querySelector('.close-btn');
+        const warrantyItems = document.querySelectorAll('.warranty-item');
 
-            resultDiv.style.display = "block";
-            
-            if(input === "IR2026") {
-                resultDiv.style.backgroundColor = "rgba(40, 167, 69, 0.1)";
-                resultDiv.style.color = "#28a745";
-                resultDiv.style.border = "1px solid #28a745";
-                resultDiv.innerHTML = "<strong>[IRON GUARD 정품 인증 성공]</strong><br>· 시공 제품: IRON Gloss (유광)<br>· 공식 시공일: 2026-03-10<br>· 보증 만료일: 2036-03-09 (10년 무상 보증)";
-            } else {
-                resultDiv.style.backgroundColor = "rgba(220, 53, 69, 0.1)";
-                resultDiv.style.color = "#dc3545";
-                resultDiv.style.border = "1px solid #dc3545";
-                resultDiv.innerHTML = "<strong>[조회 실패]</strong><br>일치하는 정품 보증서 정보가 없습니다.<br>번호를 다시 확인하시거나 시공점에 문의해 주세요.";
-            }
-        }
+        // 자바스크립트 내 에러 유발 가능성을 차단하기 위해 dataset 속성을 이용해 안전하게 구현
+        warrantyItems.forEach(item => {
+            item.addEventListener('click', () => {
+                const title = item.getAttribute('data-title');
+                const desc = item.getAttribute('data-desc');
+                const img = item.getAttribute('data-img');
 
-        // 2. 스크롤 위치에 따른 네비게이션 액티브 효과 추가
+                modalTitle.innerText = title;
+                modalDesc.innerText = desc;
+                modalImg.src = img;
+                
+                modal.style.display = 'flex'; // 중앙정렬을 위해 flex 적용
+                document.body.style.overflow = 'hidden'; // 팝업 열렸을 때 뒷배경 스크롤 방지
+            });
+        });
+
+        // 닫기 버튼 클릭 시 닫힘
+        closeBtn.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto'; // 스크롤 복구
+        });
+
+        // 어두운 바깥 배경 클릭 시 닫힘
+        window.addEventListener('click', (e) => {
+            if (e.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // 2. 스크롤 위치에 따른 네비게이션 액티브 효과
         const sections = document.querySelectorAll('section');
         const navLinks = document.querySelectorAll('.nav-links a');
 
         window.addEventListener('scroll', () => {
             let current = '';
-            
             sections.forEach(section => {
                 const sectionTop = section.offsetTop;
-                const sectionHeight = section.clientHeight;
-                // 헤더 높이(약 80px)를 감안하여 스크롤 위치 계산
                 if (window.scrollY >= (sectionTop - 120)) {
                     current = section.getAttribute('id');
                 }
